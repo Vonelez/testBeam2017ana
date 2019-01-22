@@ -3,6 +3,7 @@
 #include "include/FittingShape.h"
 #include "include/Derivative.h"
 #include "include/Resolution.h"
+#include "include/QA.h"
 
 int main() {
   TString dir("/Users/andrew/CLionProjects/shipDataAna/experimentalData/");
@@ -24,9 +25,12 @@ int main() {
 
   FittingShape *fittingShape = new FittingShape(setShape->GetShape(), runNum);
 
-  Derivative *derivative = new Derivative(fittingShape->getMeanGraph(), fittingShape->getSigmaGraph());
+  Derivative *derivative = new Derivative(fittingShape->getMeanGraph(), fittingShape->getSigmaGraph(),
+                                          fittingShape->getLeftEdge(), fittingShape->getRightEdge());
 
   Resolution(derivative->getCoordinateResolGraph());
+
+  QA(setShape, fittingShape, derivative, runNum);
 
   AnaFile->TFile::Close();
 

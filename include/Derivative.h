@@ -7,10 +7,13 @@
 
 class Derivative {
 public:
-  Derivative(TGraphErrors *meanGraph, TGraphErrors *sigmaGraph);
+  Derivative(TGraphErrors *meanGraph, TGraphErrors *sigmaGraph, Int_t leftEdge, Int_t rightEdge);
+
   virtual ~Derivative();
-  TGraphErrors * getDerivGraph() { return derivative; }
-  TGraphErrors * getCoordinateResolGraph() { return coordinateResolGraph; }
+
+  TGraphErrors *getDerivGraph() { return derivative; }
+
+  TGraphErrors *getCoordinateResolGraph() { return coordinateResolGraph; }
 
 private:
   TGraphErrors *derivative;
@@ -18,7 +21,11 @@ private:
   TGraphErrors *sigmaGraph;
   TGraphErrors *coordinateResolGraph;
 
+  Int_t leftEdge;
+  Int_t rightEdge;
+
   void init();
+
   void derivativeCalc();
 };
 

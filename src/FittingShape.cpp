@@ -5,6 +5,7 @@ FittingShape::FittingShape(TH2D *shape, Long_t runNum) {
   this->runNum = runNum;
   init();
   runningBins();
+  findingEdges();
 }
 
 FittingShape::~FittingShape() = default;
@@ -21,7 +22,7 @@ void FittingShape::runningBins() {
   TString imgFolder("img/");
   TString mkd("mkdir -p ");
   system(mkd + imgFolder);
-  TString runFolder("linarTests_");
+  TString runFolder("run_");
   runFolder += runNum;
   TString createFolder = mkd + imgFolder + runFolder;
   system(createFolder);
@@ -30,12 +31,11 @@ void FittingShape::runningBins() {
   TFile binsFile(imgFolder + runFolder + binsFileName + ending, "RECREATE");
   Int_t point = 0;
 
-  for (int i = 0; i < shape->GetNbinsX(); ++i) {
+  for (int i = 1; i < shape->GetNbinsX(); ++i) {
     currentBin = shape->ProjectionY("Current bin", i, i);
-    if (currentBin->Integral() < 10) continue;
-    Double_t leftEdge = currentBin->GetBinCenter(currentBin->FindFirstBinAbove(currentBin->GetMaximum() / 10.));
-    Double_t rightEdge = currentBin->GetBinCenter(currentBin->FindLastBinAbove(currentBin->GetMaximum() / 10.));
-    currentBin->Fit("gaus", "QR", "SAME", leftEdge, rightEdge);
+    if (currentBin->Integral() < 100) continue;
+    fitRangeEstimation(currentBin);
+    currentBin->Fit("gaus", "QR", "SAME", leftFitEdge, rightFitEdge);
     TF1 *fitFunc = currentBin->GetFunction("gaus");
     Double_t xAxisPoint = shape->GetXaxis()->GetBinCenter(i);
     meanGraph->SetPoint(point, xAxisPoint, fitFunc->GetParameter(1));
@@ -52,15 +52,51 @@ void FittingShape::runningBins() {
     currentBin->GetXaxis()->SetTitle("T (ns)");
     currentBin->GetXaxis()->SetTitleOffset(1.4);
     currentBin->GetYaxis()->SetTitle("N entries");
-
     currentBin->Write(fullBinName);
 
     point++;
   }
 
-  TFile resultFile(imgFolder + runFolder + "/results" + ending, "RECREATE");
-  meanGraph->Write("MeanValue");
-  sigmaGraph->Write("Sigma");
-  ndfGraph->Write("NDF");
-  chiSq_ndfGraph->Write("Chi2/NDF");
+}
+
+void FittingShape::findingEdges() {
+  leftEdge = 0;
+  rightEdge = ndfGraph->GetN();
+  Double_t *ndfVal;
+  ndfVal = ndfGraph->GetY();
+
+  for (int i = 1; i < ndfGraph->GetN() / 2; ++i) {
+    if (abs(ndfVal[i] - ndfVal[i - 1]) > 20) {
+      leftEdge = i;
+      break;
+    }
+  }
+
+  for (int j = ndfGraph->GetN() - 1; j > ndfGraph->GetN() / 2; --j) {
+    if (abs(ndfVal[j] - ndfVal[j + 1]) > 20) {
+      rightEdge = j;
+      break;
+    }
+  }
+}
+
+void FittingShape::fitRangeEstimation(TH1D *binHist) {
+  Double_t maxValue = binHist->GetMaximum();
+  Int_t maxValueBin = binHist->GetMaximumBin();
+  leftFitEdge = binHist->GetBinCenter(binHist->FindFirstBinAbove());
+  rightFitEdge = binHist->GetBinCenter(binHist->FindLastBinAbove());
+
+  for (int i = maxValueBin - 1; i > 0; --i) {
+    if (binHist->GetBinContent(i) < maxValue / 10) {
+      leftFitEdge = binHist->GetBinCenter(i);
+      break;
+    }
+  }
+
+  for (int j = maxValueBin + 1; j < binHist->FindLastBinAbove(); ++j) {
+    if (binHist->GetBinContent(j) < maxValue / 10) {
+      rightFitEdge = binHist->GetBinCenter(j);
+      break;
+    }
+  }
 }

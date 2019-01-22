@@ -30,7 +30,7 @@ EXEC = realDataTests
 SOURCE_DIR = src
 
 #list here all the source files
-SRC = main.cpp  $(SOURCE_DIR)/MAMBA_presetting.cpp $(SOURCE_DIR)/STRAW_presetting.cpp $(SOURCE_DIR)/SettingVShape.cpp $(SOURCE_DIR)/FittingShape.cpp $(SOURCE_DIR)/Derivative.cpp $(SOURCE_DIR)/Resolution.cpp
+SRC = main.cpp  $(SOURCE_DIR)/MAMBA_presetting.cpp $(SOURCE_DIR)/STRAW_presetting.cpp $(SOURCE_DIR)/SettingVShape.cpp $(SOURCE_DIR)/FittingShape.cpp $(SOURCE_DIR)/Derivative.cpp $(SOURCE_DIR)/Resolution.cpp $(SOURCE_DIR)/QA.cpp
 
 #A directory for build artefacts
 BUILD_DIR = Build

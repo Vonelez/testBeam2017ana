@@ -1,4 +1,5 @@
 #include "../include/Resolution.h"
+
 Resolution::Resolution(TGraphErrors *resolGraph) {
   this->resolGraph = resolGraph;
   init();
@@ -22,12 +23,12 @@ void Resolution::weightedMean() {
   for (int i = 0; i < resolGraph->GetN(); ++i) {
     Double_t error = resolGraph->GetErrorY(i);
     if (y[i] < 0.05) continue;
-    sum += y[i] / (error*error);
-    weightsSum += 1 / (error*error);
+    sum += y[i] / (error * error);
+    weightsSum += 1 / (error * error);
   }
 
   resolution = sum / weightsSum;
   resolutionError = sqrt(1 / weightsSum);
 
-  std::cout << "Resolution \t" << resolution << " +/- "  << resolutionError << " um \n";
+  std::cout << "---> Resolution (" << resolution << " +/- " << resolutionError << ") um \n";
 }

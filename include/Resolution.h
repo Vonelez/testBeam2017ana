@@ -7,11 +7,14 @@
 class Resolution {
 public:
   Resolution(TGraphErrors *resolGraph);
+
   virtual ~Resolution();
 
 private:
   void init();
+
   TGraphErrors *resolGraph;
+
   void weightedMean();
 };
 
