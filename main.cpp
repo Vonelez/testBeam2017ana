@@ -24,17 +24,25 @@ int main() {
 
   auto *setShape = new SettingVShape(st, mt, binning);
 
-  std::cout << "I'm done" << std::endl;
+  std::cout << "I did /setShape/" << std::endl;
 
-//  auto *fittingShape = new FittingShape(setShape->GetShape(), runNum);
+  auto *fittingShape = new FittingShape(setShape->GetShape(), runNum);
 
-//  auto *derivative = new Derivative(fittingShape->getMeanGraph(), fittingShape->getSigmaGraph(), fittingShape->getLeftEdge(), fittingShape->getRightEdge());
+  std::cout << "I did /fittingShape/" << std::endl;
 
-//  Resolution(derivative->getCoordinateResolGraph());
+  auto *derivative = new Derivative(fittingShape->getMeanGraph(), fittingShape->getSigmaGraph(), fittingShape->getLeftEdge(), fittingShape->getRightEdge());
 
-//  QA(setShape, fittingShape, derivative, runNum);
+  std::cout << "I did /derivative/" << std::endl;
+
+  Resolution(derivative->getCoordinateResolGraph());
+
+  std::cout << "I did /Resolution/" << std::endl;
+
+  QA(setShape, fittingShape, derivative, runNum);
+
+  std::cout << "I did /QA/" << std::endl;
 
 //  AnaFile->TFile::Close();
 
-  return 0;
+  return 1;
 }
