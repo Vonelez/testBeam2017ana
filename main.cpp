@@ -6,8 +6,8 @@
 #include "include/QA.h"
 
 int main() {
-  TString dir("/Volumes/Andrew's Seagate Drive/SHiP_DATA/");
-//  TString dir("/Users/andrew_zelenov/Documents/SHiP/DATA/SOFT/");
+//  TString dir("/Volumes/Andrew's Seagate Drive/SHiP_DATA/");
+  TString dir("/eos/experiment/ship/TestBeam/StrawTracker/2017/H2-Tests/synchronized_trees/");
   TString fileName("Synchronized_data_run_");
   Long_t runNum = 164;
   TString ending(".root");
