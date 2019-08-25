@@ -7,7 +7,7 @@ SettingVShape::SettingVShape(TTree *STRAW_EVENT_tree, TTree *MAMBA_EVENT_tree, I
   mam_nEntries = 0;
   N = 0;
   count_processed = 0;
-  vshape = new TH2D("InitVShape", "InitVShape", 24 * 1000 / binning, -12.0, 12.0, 550, -100.0, 1000.0);
+  vshape = new TH2D("InitVShape", "InitVShape", 24 * 1000 / binning, -12.0, 12.0, 550, -100.0, 1400.0);
   vshape->GetXaxis()->SetTitle("U (mm)");
   vshape->GetYaxis()->SetTitle("T (ns)");
   merging();
