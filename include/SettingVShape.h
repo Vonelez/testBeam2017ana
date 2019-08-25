@@ -21,7 +21,6 @@ private:
   TTree *MAMBA_EVENT_tree;
   TH2D *vshape;
 
-  Int_t binning;
   Double_t conversion;
   Int_t mam_nEntries;
   Int_t N;
@@ -29,7 +28,7 @@ private:
 
 
 
-  virtual void merging(TTree *STRAW_EVENT_tree, TTree *MAMBA_EVENT_tree);
+  virtual void merging();
 
   virtual void filling_hists(STRAW_presetting *straw, MAMBA_presetting *mamba);
 

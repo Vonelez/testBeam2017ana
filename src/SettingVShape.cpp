@@ -1,30 +1,28 @@
 #include "../include/SettingVShape.h"
 
 SettingVShape::SettingVShape(TTree *STRAW_EVENT_tree, TTree *MAMBA_EVENT_tree, Int_t binning) {
-  this->binning = binning;
   this->STRAW_EVENT_tree = STRAW_EVENT_tree;
   this->MAMBA_EVENT_tree = MAMBA_EVENT_tree;
   conversion = 25.0 / 1024;
   mam_nEntries = 0;
   N = 0;
   count_processed = 0;
-  Int_t bins = 24 * 1000 / binning;
-  vshape = new TH2D("InitVShape", "InitVShape", bins, -12.0, 12.0, 550, -100.0, 1000.0);
+  vshape = new TH2D("InitVShape", "InitVShape", 24 * 1000 / binning, -12.0, 12.0, 550, -100.0, 1000.0);
   vshape->GetXaxis()->SetTitle("U (mm)");
   vshape->GetYaxis()->SetTitle("T (ns)");
-  merging(STRAW_EVENT_tree, MAMBA_EVENT_tree);
+  merging();
 }
 
 SettingVShape::~SettingVShape() = default;
 
 
-void SettingVShape::merging(TTree *STRAW_EVENT_tree, TTree *MAMBA_EVENT_tree) {
+void SettingVShape::merging() {
   auto *straw = new STRAW_presetting(STRAW_EVENT_tree);
   auto *mamba = new MAMBA_presetting(MAMBA_EVENT_tree);
 
-  mam_nEntries = (Int_t) MAMBA_EVENT_tree->GetEntries();
-  N = mam_nEntries;
-//    N = 10000;
+  mam_nEntries = (Int_t) MAMBA_EVENT_tree->GetEntries(); //? (Int_t) ?
+//  N = mam_nEntries;
+  N = 10000;
   cout << "requesting " << N << " events..." << endl;
 
   cout << "Begin analysis..." << endl;
@@ -43,6 +41,7 @@ void SettingVShape::merging(TTree *STRAW_EVENT_tree, TTree *MAMBA_EVENT_tree) {
 /// progress bar
 
     STRAW_EVENT_tree->GetEntry(i);
+    mamba->CleanArrays();
     MAMBA_EVENT_tree->GetEntry(i);
 
     filling_hists(straw, mamba);

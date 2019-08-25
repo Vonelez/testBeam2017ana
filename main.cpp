@@ -24,15 +24,13 @@ int main() {
 
   auto *setShape = new SettingVShape(st, mt, binning);
 
-  auto *fittingShape = new FittingShape(setShape->GetShape(), runNum);
+//  auto *fittingShape = new FittingShape(setShape->GetShape(), runNum);
 
-  auto *derivative = new Derivative(fittingShape->getMeanGraph(), fittingShape->getSigmaGraph(),
-                                          fittingShape->getLeftEdge(), fittingShape->getRightEdge());
+//  auto *derivative = new Derivative(fittingShape->getMeanGraph(), fittingShape->getSigmaGraph(), fittingShape->getLeftEdge(), fittingShape->getRightEdge());
 
-  Resolution::
-  Resolution(derivative->getCoordinateResolGraph());
+//  Resolution(derivative->getCoordinateResolGraph());
 
-  auto * qa = new QA(setShape, fittingShape, derivative, runNum);
+//  QA(setShape, fittingShape, derivative, runNum);
 
   AnaFile->TFile::Close();
 

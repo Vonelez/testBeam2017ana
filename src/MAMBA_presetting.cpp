@@ -76,3 +76,16 @@ void MAMBA_presetting::SetUpMAMBATree(TTree *MAMBA_EVENT_tree) {
     MAMBA_EVENT_tree->SetBranchAddress("spVPos", &spVPos);
     MAMBA_EVENT_tree->SetBranchAddress("spIsOnTrk", &spIsOnTrk);
 }
+
+void MAMBA_presetting::CleanArrays() {
+  memset(spLayer, 0, sizeof(spLayer));
+  memset(spXPos, 0, sizeof(spXPos));
+  memset(spYPos, 0, sizeof(spYPos));
+  memset(spZPos, 0, sizeof(spZPos));
+  memset(spXErr, 0, sizeof(spXErr));
+  memset(spYErr, 0, sizeof(spYErr));
+  memset(spZErr, 0, sizeof(spZErr));
+  memset(spUPos, 0, sizeof(spUPos));
+  memset(spVPos, 0, sizeof(spVPos));
+  memset(spIsOnTrk, 0, sizeof(spIsOnTrk));
+}
