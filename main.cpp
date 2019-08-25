@@ -24,6 +24,8 @@ int main() {
 
   auto *setShape = new SettingVShape(st, mt, binning);
 
+  std::cout << "I'm done" << std::endl;
+
 //  auto *fittingShape = new FittingShape(setShape->GetShape(), runNum);
 
 //  auto *derivative = new Derivative(fittingShape->getMeanGraph(), fittingShape->getSigmaGraph(), fittingShape->getLeftEdge(), fittingShape->getRightEdge());
@@ -32,7 +34,7 @@ int main() {
 
 //  QA(setShape, fittingShape, derivative, runNum);
 
-  AnaFile->TFile::Close();
+//  AnaFile->TFile::Close();
 
   return 0;
 }
