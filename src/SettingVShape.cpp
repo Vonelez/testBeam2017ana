@@ -49,6 +49,7 @@ void SettingVShape::merging() {
     count_processed++;
   }
   cout << endl;
+  delete straw, mamba;
 
 }
 
