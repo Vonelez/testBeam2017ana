@@ -13,8 +13,8 @@ int main() {
   TString ending(".root");
 
   TString RootName(dir + fileName + runNum + ending);
-
-  TFile *AnaFile = TFile::Open(RootName, "read");
+  TFile *AnaFile;
+  AnaFile = TFile::Open(RootName, "read");
   TTree *mt;
   TTree *st;
   AnaFile->GetObject("tree", mt);
