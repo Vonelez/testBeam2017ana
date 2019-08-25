@@ -2,15 +2,10 @@
 
 Resolution::Resolution(TGraphErrors *resolGraph) {
   this->resolGraph = resolGraph;
-  init();
   weightedMean();
 }
 
 Resolution::~Resolution() = default;
-
-void Resolution::init() {
-
-}
 
 void Resolution::weightedMean() {
   Double_t *y;

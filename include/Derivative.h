@@ -24,8 +24,6 @@ private:
   Int_t leftEdge;
   Int_t rightEdge;
 
-  void init();
-
   void derivativeCalc();
 };
 

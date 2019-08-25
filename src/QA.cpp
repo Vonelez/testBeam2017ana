@@ -59,32 +59,42 @@ void QA::drawingPics() {
   derivativeGraph->Write("derivative");
   coordResolGraph->Write("coordResol");
   binsFile.Close();
+  cout << "~~~ RootFile was saved ~~~" << endl;
 
+  TString shapeName = imgFolder + "/vShape.pdf";
   TCanvas *shape = new TCanvas("Shape", "Shape", 1400, 1000);
   shape->cd();
   vShape->Draw("COLZ");
+  shape->SaveAs(shapeName, "Q");
 
+  TString meanValueName = imgFolder + "/fitMean.pdf";
   TCanvas *meanValue = new TCanvas("fit mean value", "fit mean value", 1400, 1000);
   meanValue->cd();
   meanValueGraph->SetMarkerColor(kGreen + 2);
   meanValueGraph->SetMarkerSize(1.2);
   meanValueGraph->SetMarkerStyle(24);
   meanValueGraph->Draw("AP");
+  meanValue->SaveAs(meanValueName, "Q");
 
+  TString sigmaName = imgFolder + "/fitSigma.pdf";
   TCanvas *sigma = new TCanvas("fit sigma", "fit sigma", 1400, 1000);
   sigma->cd();
   sigmaGraph->SetMarkerColor(kRed + 2);
   sigmaGraph->SetMarkerSize(1.2);
   sigmaGraph->SetMarkerStyle(24);
   sigmaGraph->Draw("AP");
+  sigma->SaveAs(sigmaName, "Q");
 
+  TString derivativeName = imgFolder + "/derivative.pdf";
   TCanvas *derivative = new TCanvas("derivative", "derivative", 1400, 1000);
   derivative->cd();
   derivativeGraph->SetMarkerColor(kBlue + 2);
   derivativeGraph->SetMarkerSize(1.2);
   derivativeGraph->SetMarkerStyle(24);
   derivativeGraph->Draw("AP");
+  derivative->SaveAs(derivativeName, "Q");
 
+  TString coordResolName = imgFolder + "/coordResol.pdf";
   TCanvas *coordResol = new TCanvas("coord resolution", "coord resolution", 1400, 1000);
   coordResol->cd();
   coordResolGraph->GetYaxis()->SetRangeUser(0., 0.5);
@@ -92,12 +102,5 @@ void QA::drawingPics() {
   coordResolGraph->SetMarkerSize(1.2);
   coordResolGraph->SetMarkerStyle(24);
   coordResolGraph->Draw("AP");
-
-  TString shapeName("/vShape.pdf");
-
-  shape->SaveAs(imgFolder + shapeName, "Q");
-  meanValue->SaveAs(imgFolder + "/fitMean.pdf", "Q");
-  sigma->SaveAs(imgFolder + "/fitSigma.pdf", "Q");
-  derivative->SaveAs(imgFolder + "/derivative.pdf", "Q");
-  coordResol->SaveAs(imgFolder + "/coordResol.pdf", "Q");
+  coordResol->SaveAs(coordResolName, "Q");
 }

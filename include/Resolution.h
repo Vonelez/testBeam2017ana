@@ -11,7 +11,6 @@ public:
   virtual ~Resolution();
 
 private:
-  void init();
 
   TGraphErrors *resolGraph;
 

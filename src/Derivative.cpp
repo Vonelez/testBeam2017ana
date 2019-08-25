@@ -5,16 +5,13 @@ Derivative::Derivative(TGraphErrors *meanGraph, TGraphErrors *sigmaGraph, Int_t 
   this->sigmaGraph = sigmaGraph;
   this->leftEdge = leftEdge;
   this->rightEdge = rightEdge;
-  init();
+  derivative = new TGraphErrors();
+  coordinateResolGraph = new TGraphErrors();
   derivativeCalc();
+
 }
 
 Derivative::~Derivative() = default;
-
-void Derivative::init() {
-  derivative = new TGraphErrors();
-  coordinateResolGraph = new TGraphErrors();
-}
 
 void Derivative::derivativeCalc() {
   Double_t *x, *y, *ySigma;
@@ -22,11 +19,12 @@ void Derivative::derivativeCalc() {
   y = meanGraph->GetY();
   ySigma = sigmaGraph->GetY();
   Int_t point = 0;
-  Double_t dX = x[1] - x[0];
+  Double_t dX = 0;
   Double_t derivativeValue = 0;
-  for (int i = leftEdge + 2; i < rightEdge - 2; i += 4) {
+  for (int i = leftEdge + 2; i < rightEdge - 2; i++) {
     derivativeValue = ((y[i - 1] - y[i - 2]) / (x[i - 1] - x[i - 2]) + (y[i] - y[i - 1]) / (x[i] - x[i - 1]) +
                        (y[i + 1] - y[i]) / (x[i + 1] - x[i]) + (y[i + 2] - y[i + 1]) / (x[i + 2] - x[i + 1])) / 4;
+    dX = x[i] - x[i-1];
     derivative->SetPoint(point, x[i], derivativeValue);
 
     Double_t dY_errorSquare1 = meanGraph->GetErrorY(i - 2) * meanGraph->GetErrorY(i - 2) +
@@ -47,6 +45,7 @@ void Derivative::derivativeCalc() {
             (ySigma[i] / (derivativeValue * derivativeValue)) * (ySigma[i] / (derivativeValue * derivativeValue)) *
             derivativeError * derivativeError +
             (1 / derivativeValue) * (1 / derivativeValue) * sigmaGraph->GetErrorY(i) * sigmaGraph->GetErrorY(i);
+    coordResolutionError = sqrt(coordResolutionError);
     coordinateResolGraph->SetPoint(point, x[i], coordResolution);
     coordinateResolGraph->SetPointError(point, 0., coordResolutionError);
 

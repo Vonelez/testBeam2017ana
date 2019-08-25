@@ -6,9 +6,10 @@
 #include "include/QA.h"
 
 int main() {
-  TString dir("/Users/andrew/CLionProjects/shipDataAna/experimentalData/");
+  TString dir("/Volumes/Andrew's Seagate Drive/SHiP_DATA/");
+//  TString dir("/Users/andrew_zelenov/Documents/SHiP/DATA/SOFT/");
   TString fileName("Synchronized_data_run_");
-  Long_t runNum = 222;
+  Long_t runNum = 164;
   TString ending(".root");
 
   TString RootName(dir + fileName + runNum + ending);
@@ -21,16 +22,17 @@ int main() {
 
   Int_t binning = 100;
 
-  SettingVShape *setShape = new SettingVShape(st, mt, binning);
+  auto *setShape = new SettingVShape(st, mt, binning);
 
-  FittingShape *fittingShape = new FittingShape(setShape->GetShape(), runNum);
+  auto *fittingShape = new FittingShape(setShape->GetShape(), runNum);
 
-  Derivative *derivative = new Derivative(fittingShape->getMeanGraph(), fittingShape->getSigmaGraph(),
+  auto *derivative = new Derivative(fittingShape->getMeanGraph(), fittingShape->getSigmaGraph(),
                                           fittingShape->getLeftEdge(), fittingShape->getRightEdge());
 
+  Resolution::
   Resolution(derivative->getCoordinateResolGraph());
 
-  QA(setShape, fittingShape, derivative, runNum);
+  auto * qa = new QA(setShape, fittingShape, derivative, runNum);
 
   AnaFile->TFile::Close();
 
